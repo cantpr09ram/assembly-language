@@ -1,0 +1,43 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             Prog1, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000 E3A00011        MOV              r0, #0x11   ; load initial valu
+                                                            e
+    4 00000004 E1A01080        LSL              r1, r0, #1  ; shift 1 bit left
+    5 00000008 E1A02081        LSL              r2, r1, #1  ; shift 1 bit left
+    6 0000000C EAFFFFFE 
+                       stop    B                stop        ; stop program
+    7 00000010                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\sample.d -o.\objects\sample.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM
+\CMSIS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --prede
+fine="__UVISION_VERSION SETA 528" --list=.\listings\sample.lst Sample.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Prog1 00000000
+
+Symbol: Prog1
+   Definitions
+      At line 1 in file Sample.s
+   Uses
+      None
+Comment: Prog1 unused
+stop 0000000C
+
+Symbol: stop
+   Definitions
+      At line 6 in file Sample.s
+   Uses
+      At line 6 in file Sample.s
+Comment: stop used once
+2 symbols
+334 symbols in table
