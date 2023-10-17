@@ -1,0 +1,58 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             Prog1, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         
+    4 00000000 E3A0302D        MOV              r3, #0x02D  ;
+    5 00000004 E1A03203        LSL              r3, r3, #4  ;
+    6 00000008         
+    7 00000008 E283300B        ADD              r3, r3, #0x000B ;
+    8 0000000C E3A02006        MOV              r2, #6
+    9 00000010         
+   10 00000010 E0020293        MUL              r2, r3, r2  ;6x 
+   11 00000014 E0020293        MUL              r2, r3, r2  ;6x^2
+   12 00000018         
+   13 00000018 E3A01009        MOV              r1, #9      ;-9x
+   14 0000001C E0010193        MUL              r1, r3, r1
+   15 00000020         
+   16 00000020 E0422001        SUB              r2, r2, r1
+   17 00000024         
+   18 00000024 E2822002        ADD              r2, r2, #2  ;+2
+   19 00000028         
+   20 00000028         
+   21 00000028 EAFFFFFE 
+                       stop    B                stop
+   22 0000002C                 END                          ;411440430 bo-chain
+                                                            
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Prog1 00000000
+
+Symbol: Prog1
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: Prog1 unused
+stop 00000028
+
+Symbol: stop
+   Definitions
+      At line 21 in file main.s
+   Uses
+      At line 21 in file main.s
+Comment: stop used once
+2 symbols
+334 symbols in table

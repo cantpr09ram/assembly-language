@@ -8,4 +8,4 @@ loop    CMP     r6, #0
         SUBGT    r6, r6, #1
         BGT        loop
 stop    B        stop
-        END ;
+        END ;411440430 bo-chain
