@@ -1,0 +1,65 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; 4xy - 7x +19
+    2 00000000                 AREA             pretest2, CODE,READONLY
+    3 00000000                 ENTRY
+    4 00000000         
+    5 00000000         ; Load the value of x (in 2's complement) from r3
+    6 00000000 E3A03042        MOV              r3, #66     ;0x00000042
+    7 00000004 E2633000        NEG              r3, r3      ;0xFFFFFFBE
+    8 00000008 E3A0402C        MOV              r4, #44     ;0x0000002C
+    9 0000000C         
+   10 0000000C         ; Calculate 6x^2 and store it in r2
+   11 0000000C E0050493        MUL              r5, r3, r4  ; r5 = xy          
+                                                              ;0xFFFFF4A8
+   12 00000010 E1A02105        LSL              r2, r5, #2  ; r2 = 4 * xy      
+                                                              ;0xFFFFD2A0
+   13 00000014         
+   14 00000014         ; Calculate 9x and subtract it from r2
+   15 00000014 E1A06183        LSL              r6, r3, #3  ; r6 = 8 * x       
+                                                                 ;0xFFFFFDF0
+   16 00000018 E0466003        SUB              r6, r6, r3  ; r6 = 7 * x       
+                                                                 ;0xFFFFFE32
+   17 0000001C E0422006        SUB              r2, r2, r6  ; r2 = 4 * xy - 7 *
+                                                             x    ;0xFFFFD46E
+   18 00000020         
+   19 00000020         ; Add 2 to r2
+   20 00000020 E2822013        ADD              r2, r2, #19 ; r2 = 4 * xy - 9 *
+                                                             x + 19        ;0xF
+                                                            FFFD481
+   21 00000024         ; The result is in r2
+   22 00000024 EAFFFFFE 
+                       stop    B                stop
+   23 00000028                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\prog2.d -o.\objects\prog2.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\C
+MSIS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefi
+ne="__UVISION_VERSION SETA 528" --list=.\listings\prog2.lst prog2.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+pretest2 00000000
+
+Symbol: pretest2
+   Definitions
+      At line 2 in file prog2.s
+   Uses
+      None
+Comment: pretest2 unused
+stop 00000024
+
+Symbol: stop
+   Definitions
+      At line 22 in file prog2.s
+   Uses
+      At line 22 in file prog2.s
+Comment: stop used once
+2 symbols
+334 symbols in table

@@ -1,0 +1,76 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Compute j = (2^n + 4^m + 8^p) - 17 and put j in r5
+    2 00000000         ;j = (2^n + 4^m + 8^p) - 17 = (2^n + 2^2m + 2^3p) - 17
+    3 00000000                 AREA             pretest2, CODE,READONLY ;411440
+                                                            422 Travis Chan
+    4 00000000                 ENTRY
+    5 00000000         
+    6 00000000 E3A02019        MOV              r2, #25     ; Initialize r2 wit
+                                                            h the value 25 (n)
+    7 00000004 E3A03016        MOV              r3, #22     ; Initialize r3 wit
+                                                            h the value 11 * 2 
+                                                            (2m)
+    8 00000008 E3A04012        MOV              r4, #18     ; Initialize r4 wit
+                                                            h the value 6 * 3 (
+                                                            3p)
+    9 0000000C         
+   10 0000000C E3A05001        MOV              r5, #1      ; Initialize r5 to 
+                                                            1 (for the final su
+                                                            btraction)
+   11 00000010 E3A06001        MOV              r6, #1
+   12 00000014 E3A07001        MOV              r7, #1
+   13 00000018 E1A05215        LSL              r5, r2      ; r5 = 2^n         
+                                                                       ;0x02000
+                                                            000
+   14 0000001C E1A06316        LSL              r6, r3      ; r6 = 2^2m        
+                                                                        ;0x0040
+                                                            0000
+   15 00000020 E0855006        ADD              r5, r5, r6  ; r5 = 2^n + 2^m   
+                                                                         ;0x024
+                                                            00000
+   16 00000024 E1A07417        LSL              r7, r4      ; r7 = 2^3p        
+                                                                        ;0x0004
+                                                            0000
+   17 00000028 E0855007        ADD              r5, r5, r7  ; r5 = 2^n + 2^2m +
+                                                             2^3p        ;0x024
+                                                            40000
+   18 0000002C E2455011        SUB              r5, r5, #17 ; r5 = 2^n + 2^2m +
+                                                             2^3p - 17    ;0x02
+                                                            43FFEF
+   19 00000030         
+   20 00000030 EAFFFFFE 
+                       stop    B                stop
+   21 00000034                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\prog.d -o.\objects\prog.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\prog.lst prog.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+pretest2 00000000
+
+Symbol: pretest2
+   Definitions
+      At line 3 in file prog.s
+   Uses
+      None
+Comment: pretest2 unused
+stop 00000030
+
+Symbol: stop
+   Definitions
+      At line 20 in file prog.s
+   Uses
+      At line 20 in file prog.s
+Comment: stop used once
+2 symbols
+334 symbols in table
