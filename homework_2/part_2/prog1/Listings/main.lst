@@ -1,0 +1,154 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             prog1, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         
+    4 00000000 E59F0040        LDR              r0, =data1
+    5 00000004 EAFFFFFE 
+                       stop    B                stop
+    6 00000008         
+    7 00000008 CC 8E 37 
+              FE 6B FF data1   DCW              0x8ECC, 0xFE37, -149
+    8 0000000E 00 00 0000FE37 
+              00000001 
+              00000005 
+              00000014 data2   DCD              0xFE37, 1, 5, 20
+    9 00000020 CF 17 27 
+              54 FA    data3   DCB              0XCF, 23, 39, 0x54, 250
+   10 00000025 34 12   data4   DCWU             0x1234
+   11 00000027 FF      data5   DCB              255
+   12 00000028 12345678 
+              FFFFEF1F data6   DCDU             0x12345678, -4321
+   13 00000030         
+   14 00000030 A3      data7   DCB              0xA3
+   15 00000031 00 00           ALIGN            4,3
+   16 00000033         
+   17 00000033 25 FC   data8   DCWU             0xFC25
+   18 00000035 00 00 00        ALIGN
+   19 00000038         
+   20 00000038 4D 56 50 
+              5F 4E 2E 
+              4A 6F 6B 
+              69 63 00 data9   DCB              "MVP_N.Jokic", 0
+   21 00000044 12 EF   data10  DCW              0xEF12
+   22 00000046         
+   23 00000046                 END
+              00 00 00000000 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+data1 00000008
+
+Symbol: data1
+   Definitions
+      At line 7 in file main.s
+   Uses
+      At line 4 in file main.s
+Comment: data1 used once
+data10 00000044
+
+Symbol: data10
+   Definitions
+      At line 21 in file main.s
+   Uses
+      None
+Comment: data10 unused
+data2 00000010
+
+Symbol: data2
+   Definitions
+      At line 8 in file main.s
+   Uses
+      None
+Comment: data2 unused
+data3 00000020
+
+Symbol: data3
+   Definitions
+      At line 9 in file main.s
+   Uses
+      None
+Comment: data3 unused
+data4 00000025
+
+Symbol: data4
+   Definitions
+      At line 10 in file main.s
+   Uses
+      None
+Comment: data4 unused
+data5 00000027
+
+Symbol: data5
+   Definitions
+      At line 11 in file main.s
+   Uses
+      None
+Comment: data5 unused
+data6 00000028
+
+Symbol: data6
+   Definitions
+      At line 12 in file main.s
+   Uses
+      None
+Comment: data6 unused
+data7 00000030
+
+Symbol: data7
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 14 in file main.s
+   Uses
+      None
+Comment: data7 unused
+data8 00000033
+
+Symbol: data8
+   Definitions
+      At line 17 in file main.s
+   Uses
+      None
+Comment: data8 unused
+data9 00000038
+
+Symbol: data9
+   Definitions
+      At line 20 in file main.s
+   Uses
+      None
+Comment: data9 unused
+prog1 00000000
+
+Symbol: prog1
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: prog1 unused
+stop 00000004
+
+Symbol: stop
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 5 in file main.s
+Comment: stop used once
+12 symbols
+346 symbols in table
