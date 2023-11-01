@@ -35,7 +35,7 @@ ARM Macro Assembler    Page 1
               4A 6F 6B 
               69 63 00 data9   DCB              "MVP_N.Jokic", 0
    21 00000044 12 EF   data10  DCW              0xEF12
-   22 00000046         
+   22 00000046         ;411440430 bo-chain
    23 00000046                 END
               00 00 00000000 
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o

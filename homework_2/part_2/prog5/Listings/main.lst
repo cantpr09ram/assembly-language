@@ -8,67 +8,60 @@ ARM Macro Assembler    Page 1
     2 00000000                 ENTRY
     3 00000000         
     4 00000000         ; Initial register values
-    5 00000000 E59F6034        LDR              r6, =0xABCD8765 
-                                                            ; r6 = 0xABCD8765
+    5 00000000 E59F6034        LDR              r6, =0xABCD8765
     6 00000004         
     7 00000004         ; (1) Calculate the 2's complement of r6 and put the res
                        ult in r7.
     8 00000004 E2667000        NEG              r7, r6
     9 00000008         ; (2) Set bits 1, 5, and 13 in register r6 and leave the
-                        remaining bits unchanged.
-   10 00000008 E3866022        ORR              r6, r6, #0x00000022 
-                                                            ; Set bit 1, 9
-   11 0000000C E3866020        ORR              r6, r6, #0x00000020
-   12 00000010 E3866A02        ORR              r6, r6, #0x00002000 
-                                                            ; Set bit 13
-   13 00000014         
-   14 00000014         ; (3) Clear bits 0, 4, and 12 in register r6 and leave t
+                        remaining bits unchanged
+   10 00000008 E59F3030        LDR              r3, =0x00002022
+   11 0000000C         ;0010 0000 0010 0010
+   12 0000000C E1866003        ORR              r6, r6, r3  ;
+   13 00000010         
+   14 00000010         ; (3) Clear bits 0, 4, and 12 in register r6 and leave t
                        he remaining bits unchanged.
-   15 00000014 E3C66019        BIC              r6, r6, #0x00000019 
-                                                            ; Clear bit 0
-   16 00000018 E3C66010        BIC              r6, r6, #0x00000010 
-                                                            ; Clear bit 4
-   17 0000001C E3C66A01        BIC              r6, r6, #0x00001000 
-                                                            ; Clear bit 12
-   18 00000020         
-   19 00000020         ; (4) Change bits 4, 8, and 11 of r6.
-   20 00000020 E2266C0A        EOR              r6, r6, #0x00000A00 ; Bitwise X
+   15 00000010 E59F402C        LDR              r4, =0x00001011
+   16 00000014         ;0001 0000 0001 0001
+   17 00000014 E59F6020        LDR              r6, =0xABCD8765
+   18 00000018 E1C66004        BIC              r6, r6, r4
+   19 0000001C         
+   20 0000001C         ; (4) Change bits 4, 8, and 11 of r6.
+   21 0000001C E59F6018        LDR              r6, =0xABCD8765
+   22 00000020 E2266E91        EOR              r6, r6, #0x00000910 ; Bitwise X
                                                             OR to change specif
-                                                            ied bits
-   21 00000024         
-   22 00000024         ; (5) Insert the value 0x5555 into the lower half of reg
+                                                            ied 
+   23 00000024         ;0000 1001 0001 0000
+   24 00000024         
+   25 00000024         ; (5) Insert the value 0x5555 into the lower half of reg
                        ister r0.
-   23 00000024 E59F0014        LDR              r0, =0xBEEFABCD ; Load the init
+   26 00000024 E59F001C        LDR              r0, =0xBEEFABCD ; Load the init
                                                             ial value into r0
-   24 00000028 E59F1014        LDR              r1, =0x5555 ; Load the value 0x
-                                                            5555 into r1
-   25 0000002C E1A01801        LSL              r1, r1, #16 ; Shift left by 16 
-                                                            bits to place 0x555
-                                                            5 in the lower half
-                                                            
-   26 00000030 E3C008FF        BIC              r0, r0, #0xFF0000 ; Clear the l
-                                                            ower half of r0
-   27 00000034 E1800001        ORR              r0, r0, r1  ; Bitwise OR to ins
+   27 00000028 E59F101C        LDR              r1, =0x00005555 ; Load the valu
+                                                            e 0x5555 into r1
+   28 0000002C         ;LSL  r1, r1, #16      ; Shift left by 16 bits to place 
+                       0x5555 in the lower half
+   29 0000002C E59F201C        LDR              r2, =0xFFFF
+   30 00000030 E1C00002        BIC              r0, r0, r2  ; Clear the lower h
+                                                            alf of r0
+   31 00000034 E1800001        ORR              r0, r0, r1  ; Bitwise OR to ins
                                                             ert 0x5555 in the l
                                                             ower half
-   28 00000038         
-   29 00000038         
-   30 00000038         stop
-   31 00000038 EAFFFFFE        B                stop
-   32 0000003C         
-   33 0000003C                 END
+   32 00000038         
+   33 00000038         
+   34 00000038         stop
+   35 00000038 EAFFFFFE        B                stop
+   36 0000003C         
+   37 0000003C                 END
               ABCD8765 
+              00002022 
+              00001011 
               BEEFABCD 
               00005555 
+              0000FFFF 
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
 bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
 IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
-
-
-
-ARM Macro Assembler    Page 2 
-
-
 ="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
 
 
@@ -88,9 +81,9 @@ stop 00000038
 
 Symbol: stop
    Definitions
-      At line 30 in file main.s
+      At line 34 in file main.s
    Uses
-      At line 31 in file main.s
+      At line 35 in file main.s
 Comment: stop used once
 2 symbols
 336 symbols in table

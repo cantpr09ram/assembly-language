@@ -13,7 +13,8 @@ ARM Macro Assembler    Page 1
     7 0000000C         
     8 0000000C EAFFFFFE 
                        stop    B                stop
-    9 00000010                 END                          ;
+    9 00000010                 END                          ;411440430 bo-chain
+                                                            
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
 bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
 IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine

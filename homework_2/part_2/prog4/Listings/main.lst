@@ -52,7 +52,7 @@ ARM Macro Assembler    Page 1
    35 00000030         
    36 00000030         stop
    37 00000030 EAFFFFFE        B                stop
-   38 00000034         
+   38 00000034         ;411440430 bo-chain
    39 00000034                 END
               12345678 
               87654321 
