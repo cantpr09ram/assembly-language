@@ -171,3 +171,56 @@ data3   DCD   1, 5, 20
 | LDRSB |        | signed byte      |
 | LDRSH |        | signed halfword  |
 | LDM   | STM    | multiple word    |
+#### effective address (EA)
+```
+LDR|STR{<size>}{<cond>} <Rd>, <addressing mode>
+```
+```
+LDR|STR{<size>}{<cond>} <Rd>, [<Rn>, <offset>]{!}
+```
+```assembly
+LDR		r0, =0x40000000
+LDR		r1, =0x1234ABCD
+STR		r1,[r0]
+		
+LDRH	r1, [r0]
+```
+|00|01|02|03|
+|--|--|--|--|
+|CD|AB|34|12|
+```assembly
+LDR		r0, =0x40000000
+LDR		r1, =0x1234ABCD
+STR		r1,[r0,#4]
+LDRH	r1, [r0]
+```
+|00|01|02|03|04|05|06|07|
+|--|--|--|--|--|--|--|--|
+|❌|❌|❌|❌|CD|AB|34|12|
+
+### BIC & ORR
+##### BIC
+```assembly
+BIC{cond}{S} Rd, Rn, Operand2
+BIc     r0, r1, #0x000000FF
+```
+用1指定哪些位元要清為0
+##### ORR
+```assembly
+ORR{cond}{S} Rd, Rn, Operand2
+
+```
+```assembly
+LDR		r0, =0x000000002
+LDR		r1, =1
+ROR		r0, r0, r1
+```
+右移後依序存回高位元
+|0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|0|0|0|0|0|0|0|0|0|0|0 |0 |0 |0 |1 |0 |
+
+|0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|0|0|0|1|1|0|1|0|0|0|0 |0 |0 |0 |0 |1 |
+
