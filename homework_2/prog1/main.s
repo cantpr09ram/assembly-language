@@ -1,10 +1,7 @@
 		AREA Prog1, CODE, READONLY
         ENTRY
     
-        MOV     r3, #0x02D   ;
-		LSL     r3, r3, #4     ;
-
-		ADD     r3, r3, #0x000B ;
+		LDR		r3, =0x2DB
 		MOV		r2, #6
 		
 		MUL		r2, r3, r2;6x 

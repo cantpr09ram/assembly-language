@@ -1,0 +1,121 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 40000000 
+                       SRAM_BASE
+                               EQU              0x40000000  ; start of SRAM910F
+                                                            M32
+    2 00000000                 AREA             StrCopy, CODE
+    3 00000000                 ENTRY                        ;mark the first ins
+                                                            truction
+    4 00000000         Main
+    5 00000000 E28F1028        ADR              r1, data3
+    6 00000004 E28F2040        ADR              r2, data5
+    7 00000008 E3A00101        LDR              r0, =SRAM_BASE
+    8 0000000C E3A07007        MOV              r7, #7
+    9 00000010         strcopy
+   10 00000010 E4913004        LDR              r3, [r1], #4
+   11 00000014 E4924004        LDR              r4, [r2], #4
+   12 00000018 E0835004        ADD              r5, r3, r4
+   13 0000001C E4805004        STR              r5, [r0], #4
+   14 00000020 E2477001        SUB              r7, #1
+   15 00000024 E3570000        CMP              r7, #0
+   16 00000028 1AFFFFF8        BNE              strcopy
+   17 0000002C         
+   18 0000002C EAFFFFFE 
+                       stop    B                stop
+   19 00000030 00008ECC 
+              00000FE3 
+              0000ABCD 
+              00000001 
+              00000005 
+              FFFFFFEC 
+              1234FACE data3   DCD              0x8ECC, 0xFE3, 0xABCD, 1, 5, -2
+0, 0x1234FACE
+   20 0000004C 0000FE37 
+              00000001 
+              00000005 
+              00000014 
+              ABCDFACE 
+              FFFFFFCE 
+              45671234 data5   DCD              0xFE37, 1, 5, 20, 0xABCDFACE, -
+50,0x45671234
+   21 00000068                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Main 00000000
+
+Symbol: Main
+   Definitions
+      At line 4 in file main.s
+   Uses
+      None
+Comment: Main unused
+StrCopy 00000000
+
+Symbol: StrCopy
+   Definitions
+      At line 2 in file main.s
+   Uses
+      None
+Comment: StrCopy unused
+data3 00000030
+
+Symbol: data3
+   Definitions
+      At line 19 in file main.s
+   Uses
+      At line 5 in file main.s
+Comment: data3 used once
+data5 0000004C
+
+Symbol: data5
+   Definitions
+      At line 20 in file main.s
+   Uses
+      At line 6 in file main.s
+Comment: data5 used once
+stop 0000002C
+
+Symbol: stop
+   Definitions
+      At line 18 in file main.s
+   Uses
+      At line 18 in file main.s
+Comment: stop used once
+strcopy 00000010
+
+Symbol: strcopy
+   Definitions
+      At line 9 in file main.s
+   Uses
+      At line 16 in file main.s
+Comment: strcopy used once
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+SRAM_BASE 40000000
+
+Symbol: SRAM_BASE
+   Definitions
+      At line 1 in file main.s
+   Uses
+      At line 7 in file main.s
+Comment: SRAM_BASE used once
+1 symbol
+339 symbols in table

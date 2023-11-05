@@ -1,0 +1,68 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;Put the number of 1's of r0 into r1.
+    2 00000000         ;(r0 = 0b11110000110011110011000100001111)
+    3 00000000         ;ANS:r1 = 17
+    4 00000000                 AREA             TEST, CODE, READONLY
+    5 00000000                 ENTRY
+    6 00000000         
+    7 00000000 E59F002C        LDR              r0, =0x1010
+    8 00000004 E59F102C        LDR              r1, =0x0101
+    9 00000008 E3A02001        LDR              r2, =0x1
+   10 0000000C E3A03000        LDR              r3, =0
+   11 00000010 E3A04020        LDR              r4, =32
+   12 00000014 E0205001        EOR              r5, r0, r1
+   13 00000018         
+   14 00000018         loop
+   15 00000018 E1150002        TST              r5, r2
+   16 0000001C 12833001        ADDNE            r3, r3, #1
+   17 00000020 E1A02082        LSL              r2, r2, #1
+   18 00000024 E2444001        SUB              r4, #1
+   19 00000028 E3540000        CMP              r4, #0
+   20 0000002C 1AFFFFF9        BNE              loop
+   21 00000030         
+   22 00000030 EAFFFFFE 
+                       STOP    B                STOP
+   23 00000034                 END
+              00001010 
+              00000101 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+STOP 00000030
+
+Symbol: STOP
+   Definitions
+      At line 22 in file main.s
+   Uses
+      At line 22 in file main.s
+Comment: STOP used once
+TEST 00000000
+
+Symbol: TEST
+   Definitions
+      At line 4 in file main.s
+   Uses
+      None
+Comment: TEST unused
+loop 00000018
+
+Symbol: loop
+   Definitions
+      At line 14 in file main.s
+   Uses
+      At line 20 in file main.s
+Comment: loop used once
+3 symbols
+337 symbols in table

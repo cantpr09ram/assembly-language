@@ -5,7 +5,7 @@
     LDR     r2, =0x12345678
     LDR     r3, =0x87654321
     LDR     r4, =0x00000012
-
+	;411440430 bo-chain
     ; (1) BIC r2, r2, #0xFF000000
     BIC     r2, r2, #0xFF000000  ; Clear the upper 8 bits
 
