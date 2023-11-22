@@ -1,0 +1,149 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             prog2_2, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         ;2
+    4 00000000         ;411440430 \u8b19 
+    5 00000000 E59F00D4        LDR              r0, =0xDEADABCE
+    6 00000004 E59F10D4        LDR              r1, =0xABCD8765
+    7 00000008 E59F20D4        LDR              r2, =0xBEEFFACE
+    8 0000000C E3A03101        LDR              r3, =0x40000000
+    9 00000010 E5830010        STR              r0, [r3, #0x10]
+   10 00000014 E5831020        STR              r1, [r3, #0x20]
+   11 00000018 E5832030        STR              r2, [r3, #0x30]
+   12 0000001C         
+   13 0000001C         ;a
+   14 0000001C         ;411440430 \u8b19
+   15 0000001C E3A04001        LDR              r4, =1
+   16 00000020 E3A05000        LDR              r5, =0
+   17 00000024 E3A06020        LDR              r6, =32
+   18 00000028 E5937010        LDR              r7, [r3, #0x10]
+   19 0000002C         LOOPA
+   20 0000002C E1170004        TST              r7, r4
+   21 00000030 12855001        ADDNE            r5, #1
+   22 00000034 E1A04084        LSL              r4, #1
+   23 00000038 E2466001        SUB              r6, #1
+   24 0000003C E3560000        CMP              r6, #0
+   25 00000040 1AFFFFF9        BNE              LOOPA
+   26 00000044 E5835040        STR              r5, [r3, #0x40]
+   27 00000048         ;b
+   28 00000048         ;411440430 \u8b19
+   29 00000048 E3A04001        LDR              r4, =1
+   30 0000004C E3A05000        LDR              r5, =0
+   31 00000050 E3A06020        LDR              r6, =32
+   32 00000054 E5937020        LDR              r7, [r3, #0x20]
+   33 00000058         LOOPB
+   34 00000058 E0078004        AND              r8, r7, r4
+   35 0000005C E3580001        CMP              r8, #1
+   36 00000060 02855001        ADDEQ            r5, #1
+   37 00000064 E1A070A7        LSR              r7, #1
+   38 00000068 E2466001        SUB              r6, #1
+   39 0000006C E3560000        CMP              r6, #0
+   40 00000070 1AFFFFF8        BNE              LOOPB
+   41 00000074 E5835044        STR              r5, [r3, #0x44]
+   42 00000078         ;c
+   43 00000078         ;411440430 \u8b19
+   44 00000078 E3A04001        LDR              r4, =1
+   45 0000007C E3A05000        LDR              r5, =0
+   46 00000080 E3A06000        LDR              r6, =0
+   47 00000084 E5937030        LDR              r7, [r3, #0x30]
+   48 00000088         LOOPC
+   49 00000088 E1170004        TST              r7, r4
+   50 0000008C 02855001        ADDEQ            r5, #1
+   51 00000090 E1A04084        LSL              r4, #1
+   52 00000094 E2866001        ADD              r6, #1
+   53 00000098 E3560020        CMP              r6, #32
+   54 0000009C 1AFFFFF9        BNE              LOOPC
+   55 000000A0 E5835048        STR              r5, [r3, #0x48]
+   56 000000A4         ;d
+   57 000000A4         ;411440430 \u8b19
+   58 000000A4 E3A04001        LDR              r4, =1
+   59 000000A8 E3A05000        LDR              r5, =0
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   60 000000AC E3A06020        LDR              r6, =32
+   61 000000B0 E5937020        LDR              r7, [r3, #0x20]
+   62 000000B4 E5938030        LDR              r8, [r3, #0x30]
+   63 000000B8 E0279008        EOR              r9, r7, r8
+   64 000000BC         LOOPD
+   65 000000BC E1190004        TST              r9, r4
+   66 000000C0 12855001        ADDNE            r5, #1
+   67 000000C4 E1A04084        LSL              r4, #1
+   68 000000C8 E2466001        SUB              r6, #1
+   69 000000CC E3560000        CMP              r6, #0
+   70 000000D0 1AFFFFF9        BNE              LOOPD
+   71 000000D4 E583504C        STR              r5, [r3, #0x4C]
+   72 000000D8 EAFFFFFE 
+                       STOP    b                STOP
+   73 000000DC                 END
+              DEADABCE 
+              ABCD8765 
+              BEEFFACE 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+LOOPA 0000002C
+
+Symbol: LOOPA
+   Definitions
+      At line 19 in file main.s
+   Uses
+      At line 25 in file main.s
+Comment: LOOPA used once
+LOOPB 00000058
+
+Symbol: LOOPB
+   Definitions
+      At line 33 in file main.s
+   Uses
+      At line 40 in file main.s
+Comment: LOOPB used once
+LOOPC 00000088
+
+Symbol: LOOPC
+   Definitions
+      At line 48 in file main.s
+   Uses
+      At line 54 in file main.s
+Comment: LOOPC used once
+LOOPD 000000BC
+
+Symbol: LOOPD
+   Definitions
+      At line 64 in file main.s
+   Uses
+      At line 70 in file main.s
+Comment: LOOPD used once
+STOP 000000D8
+
+Symbol: STOP
+   Definitions
+      At line 72 in file main.s
+   Uses
+      At line 72 in file main.s
+Comment: STOP used once
+prog2_2 00000000
+
+Symbol: prog2_2
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: prog2_2 unused
+6 symbols
+340 symbols in table
