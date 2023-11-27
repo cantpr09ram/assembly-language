@@ -224,3 +224,30 @@ ROR		r0, r0, r1
 |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 |0|0|0|1|1|0|1|0|0|0|0 |0 |0 |0 |0 |1 |
 
+```assembly
+AREA    Prog1, CODE, READONLY
+        ENTRY
+
+        ldr        r0, =0xabdecdad
+        ldr        r1, =0xcd65ab87
+        ldr        r2,    =0x40000020
+        ldr        r3, =0x40000030
+
+        str        r0, [r2]
+        str        r1, [r3]
+
+        ldr        r5, =1
+        ldr        r6, =0
+        ldr        r8, =0x40000040
+        eor        r7,    r0,    r1    ;66bb662a=0110 0110 1011 1011 0110 0110 0010 1010
+        ;1,3,5,9,10,13,14,16,17,19,20,21,23,25,26,29,30 bits are different
+loop
+        tst        r7,    r5
+        strbne    r6, [r8], #1
+        lsl        r5, r5, #1
+        add     r6, r6, #1
+        cmp        r6, #32
+        bne        loop
+stop    b          stop
+        end
+```
