@@ -73,8 +73,8 @@ LOOP
 		
 		
 		; Concatenate the calculated Hamming Code to the result register (r5)
-		ORR r5, r5, r2, LSL #12  ; Shift the previous content and add the new Hamming Code
-		STR	r5, [r7], #4
+		
+		STR	r2s, [r7], #4
 		; Increment the counter
 		ADD r6, r6, #1
 		 ; Continue the loop
