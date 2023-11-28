@@ -18,7 +18,7 @@ ARM Macro Assembler    Page 1
    12 00000000         
    13 00000000 E3A02000        MOV              r2, #0      ; clear out transmi
                                                             tting reg
-   14 00000004 E28F10A8        ADR              r1, arraya  ; start of constant
+   14 00000004 E28F10A4        ADR              r1, arraya  ; start of constant
                                                             s
    15 00000008 E3A05000        MOV              r5, #0
    16 0000000C E3A06000        MOV              r6, #0
@@ -26,7 +26,7 @@ ARM Macro Assembler    Page 1
    18 00000014         LOOP
    19 00000014 E4D10001        LDRB             r0, [r1], #1
    20 00000018 E3500000        CMP              r0, #0
-   21 0000001C 0A000023        BEQ              done        ;If zero, exit the 
+   21 0000001C 0A000022        BEQ              done        ;If zero, exit the 
                                                             loop
    22 00000020         ;
    23 00000020         ; calculate c0 using bits 76543210
@@ -108,36 +108,33 @@ ARM Macro Assembler    Page 2
    74 0000009C         
    75 0000009C         ; Concatenate the calculated Hamming Code to the result 
                        register (r5)
-   76 0000009C E1855602        ORR              r5, r5, r2, LSL #12 ; Shift the
-                                                             previous content a
-                                                            nd add the new Hamm
-                                                            ing Code
-   77 000000A0 E4875004        STR              r5, [r7], #4
-   78 000000A4         ; Increment the counter
-   79 000000A4 E2866001        ADD              r6, r6, #1
-   80 000000A8         ; Continue the loop
-   81 000000A8 E3560004        CMP              r6, #4      ; Check if four byt
+   76 0000009C         
+   77 0000009C E4872004        STR              r2, [r7], #4
+   78 000000A0         ; Increment the counter
+   79 000000A0 E2866001        ADD              r6, r6, #1
+   80 000000A4         ; Continue the loop
+   81 000000A4 E3560004        CMP              r6, #4      ; Check if four byt
                                                             es have been proces
                                                             sed
-   82 000000AC BAFFFFD8        BLT              LOOP
-   83 000000B0         
-   84 000000B0         
-   85 000000B0         ; with checksums
-   86 000000B0 EAFFFFFE 
+   82 000000A8 BAFFFFD9        BLT              LOOP
+   83 000000AC         
+   84 000000AC         
+   85 000000AC         ; with checksums
+   86 000000AC EAFFFFFE 
                        done    B                done
-   87 000000B4                 ALIGN
-   88 000000B4         arraya
-   89 000000B4 B5              DCB              0xB5
+   87 000000B0                 ALIGN
+   88 000000B0         arraya
+   89 000000B0 B5              DCB              0xB5
+   90 000000B1 AA              DCB              0xAA
+   91 000000B2 55              DCB              0x55
+   92 000000B3 AA              DCB              0xAA
 
 
 
 ARM Macro Assembler    Page 3 
 
 
-   90 000000B5 AA              DCB              0xAA
-   91 000000B6 55              DCB              0x55
-   92 000000B7 AA              DCB              0xAA
-   93 000000B8                 END
+   93 000000B4                 END
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
 bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
 IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
@@ -164,7 +161,7 @@ Symbol: LOOP
    Uses
       At line 82 in file main.s
 Comment: LOOP used once
-arraya 000000B4
+arraya 000000B0
 
 Symbol: arraya
    Definitions
@@ -172,7 +169,7 @@ Symbol: arraya
    Uses
       At line 14 in file main.s
 Comment: arraya used once
-done 000000B0
+done 000000AC
 
 Symbol: done
    Definitions

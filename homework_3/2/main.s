@@ -74,7 +74,7 @@ LOOP
 		
 		; Concatenate the calculated Hamming Code to the result register (r5)
 		
-		STR	r2s, [r7], #4
+		STR	r2, [r7], #4
 		; Increment the counter
 		ADD r6, r6, #1
 		 ; Continue the loop
