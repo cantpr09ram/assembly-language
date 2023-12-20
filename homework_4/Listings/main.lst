@@ -1,0 +1,117 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             HammingCode, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         ; Define memory address for Hamming code
+    4 00000000 E3A04111        LDR              R4, =0x40000004
+    5 00000004 E3A01101        LDR              R1, =0x40000000
+    6 00000008         ; Define constants for bit manipulation
+    7 00000008 E59F0094        LDR              R0, =0x00000BA6 
+                                                            ;101110100110 => 
+    8 0000000C E3A03000        MOV              R3, #0
+    9 00000010 E3A02000        MOV              R2, #0
+   10 00000014         
+   11 00000014         ; Load the Hamming code from memory
+   12 00000014         
+   13 00000014 E1A03000        MOV              R3, R0      ; make a copy
+   14 00000018         
+   15 00000018 E3C330FF        BIC              R3, R3, #0xFF
+   16 0000001C E1A02263        MOV              R2, R3, ROR #4
+   17 00000020         ;7654****
+   18 00000020 E59F5080        LDR              R5, = 0xF8F
+   19 00000024 E1C03005        BIC              R3, R0, R5
+   20 00000028 E18221E3        ORR              R2, R2 ,R3, ROR #3
+   21 0000002C         ;7654321*
+   22 0000002C         ; Store the result in HAMMING_ADDR_2
+   23 0000002C E59F5078        LDR              R5, = 0xFFB
+   24 00000030 E1C03005        BIC              R3, R0, R5
+   25 00000034 E1822163        ORR              R2, R2 ,R3, ROR #2
+   26 00000038         
+   27 00000038         ;R2 => 8-bit data from 12-bit data
+   28 00000038         ;R0 => 12-bit data
+   29 00000038         
+   30 00000038 E1A03002        MOV              R3, R2
+   31 0000003C E3A06000        MOV              R6, #0
+   32 00000040         ;C0
+   33 00000040 E02330E2        EOR              R3, R3, R2, ROR #1 ; 1 XOR 0
+   34 00000044 E02331E2        EOR              R3, R3, R2, ROR #3 
+                                                            ; 3 XOR 1 XOR 0
+   35 00000048 E0233262        EOR              R3, R3, R2, ROR #4 ; 4 XOR 3 XO
+                                                            R 1 XOR 0
+   36 0000004C E0233362        EOR              R3, R3, R2, ROR #6 ; 6 XOR 4 XO
+                                                            R 3 XOR 1 XOR 0
+   37 00000050 E2036001        AND              R6, R3, #1
+   38 00000054         ;C1
+   39 00000054 E1A03002        MOV              R3, R2
+   40 00000058 E0233162        EOR              R3, R3, R2, ROR #2 ; 2 XOR 0
+   41 0000005C E02331E2        EOR              R3, R3, R2, ROR #3 
+                                                            ; 3 XOR 2 XOR 0
+   42 00000060 E02332E2        EOR              R3, R3, R2, ROR #5 ; 5 XOR 3 XO
+                                                            R 2 XOR 0
+   43 00000064 E0233362        EOR              R3, R3, R2, ROR #6 ; 6 XOR 4 XO
+                                                            R 3 XOR 2 XOR 0
+   44 00000068 E2033001        AND              R3, R3, #1
+   45 0000006C E1866083        ORR              R6, R6, R3, LSL #1
+   46 00000070         ;C2
+   47 00000070 E1A030E2        ROR              R3, R2, #1  ; get bit 1
+   48 00000074 E0233162        EOR              R3, R3, R2, ROR #2 ; 2 XOR 1
+   49 00000078 E02331E2        EOR              R3, R3, R2, ROR #3 
+                                                            ; 3 XOR 2 XOR 1
+   50 0000007C E02333E2        EOR              R3, R3, R2, ROR #7 ; 7 XOR 3 XO
+                                                            R 2 XOR 1
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   51 00000080 E2033001        AND              R3, R3, #1
+   52 00000084 E1866103        ORR              R6, R6, R3, LSL #2
+   53 00000088         
+   54 00000088 E1A03262        ROR              R3, R2, #4  ; get bit 4
+   55 0000008C E02332E2        EOR              R3, R3, R2, ROR #5 ; 5 XOR 4
+   56 00000090 E0233362        EOR              R3, R3, R2, ROR #6 
+                                                            ; 6 XOR 5 XOR 4
+   57 00000094 E02333E2        EOR              R3, R3, R2, ROR #7 ; 7 XOR 6 XO
+                                                            R 5 XOR 4
+   58 00000098 E2033001        AND              R3, R3, #1
+   59 0000009C E1866183        ORR              R6, R6, R3, LSL #3
+   60 000000A0         ; End of program
+   61 000000A0 EAFFFFFE 
+                       STOP    B                STOP
+   62 000000A4                 END
+              00000BA6 
+              00000F8F 
+              00000FFB 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+HammingCode 00000000
+
+Symbol: HammingCode
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: HammingCode unused
+STOP 000000A0
+
+Symbol: STOP
+   Definitions
+      At line 61 in file main.s
+   Uses
+      At line 61 in file main.s
+Comment: STOP used once
+2 symbols
+336 symbols in table
