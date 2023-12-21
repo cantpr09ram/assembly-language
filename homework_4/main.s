@@ -1,62 +1,77 @@
         AREA HammingCode, CODE, READONLY
 		ENTRY
         ; Define memory address for Hamming code
-		LDR R4, =0x40000004
-		LDR R1, =0x40000000
-        ; Define constants for bit manipulation
 		LDR R0, =0x00000BA6 ;101110100110 => 
-		MOV R3, #0
+		LDR R1, =0x40000000
 		MOV R2, #0
-
+		MOV R3, #0
+		LDR R4, =0x40000004
+		MOV R7, #0
+		MOV R6, #0
         ; Load the Hamming code from memory
                
 		MOV R3, R0 ; make a copy
 		
 		BIC R3, R3, #0xFF
-		MOV R2, R3, ROR #4
+		MOV R6, R3, ROR #4
 		;7654****
 		LDR R5, = 0xF8F
 		BIC R3, R0, R5
-		ORR R2, R2 ,R3, ROR #3
+		ORR R6, R6 ,R3, ROR #3
 		;7654321*
-        ; Store the result in HAMMING_ADDR_2
+        ; Store the result in R2
         LDR R5, = 0xFFB
 		BIC R3, R0, R5
-		ORR R2, R2 ,R3, ROR #2
+		ORR R6, R6 ,R3, ROR #2
+		; Load the ckackbit from memory
 		
-		;R2 => 8-bit data from 12-bit data
+		LDR R5, = 0xF7F
+		BIC R3, R0, R5
+		ORR R7, R7 ,R3, ROR #4
+		
+		LDR R5, = 0xFF7
+		BIC R3, R0, R5
+		ORR R7, R7 ,R3, ROR #1
+		
+		LDR R5, = 0xFFc
+		BIC R3, R0, R5
+		ORR R7, R7 ,R3
+		;R6 => 8-bit data from 12-bit data
 		;R0 => 12-bit data
+		;R7 => checksum bit from 12-bit data
 		
-		MOV R3, R2
-		MOV R6, #0
+		MOV R3, R6
+		
 		;C0
-		EOR R3, R3, R2, ROR #1 ; 1 XOR 0
-		EOR R3, R3, R2, ROR #3 ; 3 XOR 1 XOR 0
-		EOR R3, R3, R2, ROR #4 ; 4 XOR 3 XOR 1 XOR 0
-		EOR R3, R3, R2, ROR #6 ; 6 XOR 4 XOR 3 XOR 1 XOR 0
-		AND R6, R3, #1
+		EOR R3, R3, R6, ROR #1 ; 1 XOR 0
+		EOR R3, R3, R6, ROR #3 ; 3 XOR 1 XOR 0
+		EOR R3, R3, R6, ROR #4 ; 4 XOR 3 XOR 1 XOR 0
+		EOR R3, R3, R6, ROR #6 ; 6 XOR 4 XOR 3 XOR 1 XOR 0
+		AND R2, R3, #1
 		;C1
-		MOV R3, R2
-		EOR R3, R3, R2, ROR #2 ; 2 XOR 0
-		EOR R3, R3, R2, ROR #3 ; 3 XOR 2 XOR 0
-		EOR R3, R3, R2, ROR #5 ; 5 XOR 3 XOR 2 XOR 0
-		EOR R3, R3, R2, ROR #6 ; 6 XOR 4 XOR 3 XOR 2 XOR 0
+		MOV R3, R6
+		EOR R3, R3, R6, ROR #2 ; 2 XOR 0
+		EOR R3, R3, R6, ROR #3 ; 3 XOR 2 XOR 0
+		EOR R3, R3, R6, ROR #5 ; 5 XOR 3 XOR 2 XOR 0
+		EOR R3, R3, R6, ROR #6 ; 6 XOR 4 XOR 3 XOR 2 XOR 0
 		AND R3, R3, #1
-		ORR R6, R6, R3, LSL #1
+		ORR R2, R2, R3, LSL #1
 		;C2
-		ROR R3, R2, #1 ; get bit 1
-		EOR R3, R3, R2, ROR #2 ; 2 XOR 1
-		EOR R3, R3, R2, ROR #3 ; 3 XOR 2 XOR 1
-		EOR R3, R3, R2, ROR #7 ; 7 XOR 3 XOR 2 XOR 1
+		ROR R3, R6, #1 ; get bit 1
+		EOR R3, R3, R6, ROR #2 ; 2 XOR 1
+		EOR R3, R3, R6, ROR #3 ; 3 XOR 2 XOR 1
+		EOR R3, R3, R6, ROR #7 ; 7 XOR 3 XOR 2 XOR 1
 		AND R3, R3, #1
-		ORR R6, R6, R3, LSL #2
+		ORR R2, R2, R3, LSL #2
 		
-		ROR R3, R2, #4 ; get bit 4
-		EOR R3, R3, R2, ROR #5 ; 5 XOR 4
-		EOR R3, R3, R2, ROR #6 ; 6 XOR 5 XOR 4
-		EOR R3, R3, R2, ROR #7 ; 7 XOR 6 XOR 5 XOR 4
+		ROR R3, R6, #4 ; get bit 4
+		EOR R3, R3, R6, ROR #5 ; 5 XOR 4
+		EOR R3, R3, R6, ROR #6 ; 6 XOR 5 XOR 4
+		EOR R3, R3, R6, ROR #7 ; 7 XOR 6 XOR 5 XOR 4
 		AND R3, R3, #1
-		ORR R6, R6, R3, LSL #3
+		ORR R2, R2, R3, LSL #3
+		;R2 => checksum bit from 8-bit data
+		
         ; End of program
 STOP    B   STOP
         END
