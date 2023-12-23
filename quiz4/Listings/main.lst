@@ -1,0 +1,115 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             QUIZ, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         
+    4 00000000         ;put odd pariy for bit 2, 4, 6 and 8 of address 0x400000
+                       00
+    5 00000000         ;into bit 7 of address 0x40000008
+    6 00000000         ;Assume
+    7 00000000         ;address 0x40000000 = 0x5678ABCD
+    8 00000000         ;address 0x40000004 = 0xABCD8765
+    9 00000000         ;address 0x40000008 = 0xFACEBEEF
+   10 00000000         ;address 0x4000000C = 0xDEADBEEF
+   11 00000000         
+   12 00000000 E59F0088        LDR              R0, = 0x8765ABCD
+   13 00000004 E59F2088        LDR              R2, = 0xFACEBEEF
+   14 00000008 E3A04101        LDR              R4, = 0x40000000
+   15 0000000C E3A05080        LDR              R5, = 0x80  ;0b10000000
+   16 00000010 E5840000        STR              R0, [R4]
+   17 00000014 E5842008        STR              R2, [R4, #8]
+   18 00000018         
+   19 00000018 E5946000        LDR              R6, [R4]
+   20 0000001C E5947008        LDR              R7, [R4, #8]
+   21 00000020 E1A08006        MOV              R8, R6      ;make a copy
+   22 00000024 E1A08166        ROR              R8, R6, #2  ;BIT-2
+   23 00000028 E0288266        EOR              R8, R6, ROR #4 ;2 XOR 4
+   24 0000002C E0288366        EOR              R8, R6, ROR #6 ;2 XOR 4 XOR 6
+   25 00000030 E0288466        EOR              R8, R6, ROR #8 ;2 XOR 4 XOR 6 X
+                                                            OR 8
+   26 00000034         
+   27 00000034 E3180001        TST              R8, #1
+   28 00000038 01877005        ORREQ            R7, R5      ;if even parity = 0
+                                                            (odd parity = 1), p
+                                                            ut 1 into bit 7 of 
+                                                            0x40000008
+   29 0000003C 11C77005        BICNE            R7, R5      ;if even parity = 1
+                                                            (odd parity = 1), p
+                                                            ut 0 into bit 7 of 
+                                                            0x40000008
+   30 00000040 E5847008        STR              R7, [R4, #8]
+   31 00000044         ;put even pariy for bit 1, 3, 5, 7 and 9 of address 0x40
+                       000004
+   32 00000044         ;into bit 9 of address 0x4000000C
+   33 00000044         ;Assume
+   34 00000044         ;address 0x40000000 = 0x5678ABCD
+   35 00000044         ;address 0x40000004 = 0xABCD8765
+   36 00000044         ;address 0x40000008 = 0xFACEBEEF
+   37 00000044         ;address 0x4000000C = 0xDEADBEEF
+   38 00000044 E59F104C        LDR              R1, = 0xABCD8765
+   39 00000048 E59F304C        LDR              R3, = 0xDEADBEEF
+   40 0000004C E3A04101        LDR              R4, = 0x40000000
+   41 00000050 E3A05C02        LDR              R5, = 0x200
+   42 00000054 E5841004        STR              R1, [R4, #4]
+   43 00000058 E584300C        STR              R3, [R4, #0xC]
+   44 0000005C         
+   45 0000005C E5946004        LDR              R6, [R4, #4]
+   46 00000060 E594700C        LDR              R7, [R4, #0xC]
+   47 00000064 E1A08006        MOV              R8, R6
+   48 00000068 E1A080E6        ROR              R8, R6, #1
+   49 0000006C E02881E6        EOR              R8, R6, ROR #3
+   50 00000070 E02882E6        EOR              R8, R6, ROR #5
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   51 00000074 E02883E6        EOR              R8, R6, ROR #7
+   52 00000078 E02884E6        EOR              R8, R6, ROR #9
+   53 0000007C         
+   54 0000007C E3180001        TST              R8, #1
+   55 00000080 01C77005        BICEQ            R7, R5
+   56 00000084 11877005        ORRNE            R7, R5
+   57 00000088         
+   58 00000088 E584700C        STR              R7, [R4, #0xC]
+   59 0000008C         
+   60 0000008C EAFFFFFE 
+                       STOP    B                STOP
+   61 00000090                 END
+              8765ABCD 
+              FACEBEEF 
+              ABCD8765 
+              DEADBEEF 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+QUIZ 00000000
+
+Symbol: QUIZ
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: QUIZ unused
+STOP 0000008C
+
+Symbol: STOP
+   Definitions
+      At line 60 in file main.s
+   Uses
+      At line 60 in file main.s
+Comment: STOP used once
+2 symbols
+336 symbols in table
