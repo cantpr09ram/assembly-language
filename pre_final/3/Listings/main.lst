@@ -1,0 +1,125 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             EXAMPLE, CODE
+    2 00000000                 ENTRY
+    3 00000000         
+    4 00000000         ; Define memory addresses
+    5 00000000 E3A00101        LDR              R0, =0x40000000
+    6 00000004 E3A051C1        LDR              R5, =0x40000030
+    7 00000008         
+    8 00000008 E59F1088        LDR              R1, =0xCDEF5678
+    9 0000000C E59F2088        LDR              R2, =0x5678CDEF
+   10 00000010 E59F3088        LDR              R3, =0xBEEFFACE
+   11 00000014 E59F4088        LDR              R4, =0xFACEBEEF
+   12 00000018 E5801000        STR              R1, [R0]
+   13 0000001C E5802004        STR              R2, [R0, #0x04]
+   14 00000020 E5803008        STR              R3, [R0, #0x08]
+   15 00000024 E580400C        STR              R4, [R0, #0x0C]
+   16 00000028         
+   17 00000028 E59F6078        LDR              R6, =0xFACEFACE ;ODD
+   18 0000002C E59F7074        LDR              R7, =0xFACEFACE ;EVEN
+   19 00000030         ; Call CheckParity subroutine for each word
+   20 00000030 E590A000        LDR              R10, [R0]
+   21 00000034 EB00000A        BL               CheckParity
+   22 00000038 E585B000        STR              R11, [R5]
+   23 0000003C         
+   24 0000003C E590A004        LDR              R10, [R0, #0x04]
+   25 00000040 EB000007        BL               CheckParity
+   26 00000044 E585B004        STR              R11, [R5, #0x04]
+   27 00000048         
+   28 00000048 E590A008        LDR              R10, [R0, #0x08]
+   29 0000004C EB000004        BL               CheckParity
+   30 00000050 E585B008        STR              R11, [R5, #0x08]
+   31 00000054         
+   32 00000054 E590A00C        LDR              R10, [R0, #0x0C]
+   33 00000058 EB000001        BL               CheckParity
+   34 0000005C E585B00C        STR              R11, [R5, #0x0C]
+   35 00000060         
+   36 00000060         ; Infinite loop to halt the program
+   37 00000060 EAFFFFFE 
+                       STOP    B                STOP
+   38 00000064         
+   39 00000064         CheckParity
+   40 00000064 E92D44C0        STMFD            SP!, {R10, R6, R7, LR} ; Save r
+                                                            egisters to the sta
+                                                            ck
+   41 00000068 E3A08001        MOV              R8, #1
+   42 0000006C E1A0900A        MOV              R9, R10
+   43 00000070 E029987A        EOR              R9, R9, R10, ROR R8
+   44 00000074 E1A0B006        MOV              R11, R6
+   45 00000078         LOOP
+   46 00000078 E029987A        EOR              R9, R9, R10, ROR R8
+   47 0000007C E2888001        ADD              R8, R8, #1
+   48 00000080 E3580020        CMP              R8, #32
+   49 00000084 1AFFFFFB        BNE              LOOP
+   50 00000088 E3190001        TST              R9, #1
+   51 0000008C 01A0B007        MOVEQ            R11, R7
+   52 00000090         
+   53 00000090 E8BD44C0        LDMFD            SP!, {R10, R6, R7, LR} ; Restor
+                                                            e registers from th
+                                                            e stack
+   54 00000094 E12FFF1E        BX               LR
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   55 00000098         
+   56 00000098                 END
+              CDEF5678 
+              5678CDEF 
+              BEEFFACE 
+              FACEBEEF 
+              FACEFACE 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CheckParity 00000064
+
+Symbol: CheckParity
+   Definitions
+      At line 39 in file main.s
+   Uses
+      At line 21 in file main.s
+      At line 25 in file main.s
+      At line 29 in file main.s
+      At line 33 in file main.s
+
+EXAMPLE 00000000
+
+Symbol: EXAMPLE
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: EXAMPLE unused
+LOOP 00000078
+
+Symbol: LOOP
+   Definitions
+      At line 45 in file main.s
+   Uses
+      At line 49 in file main.s
+Comment: LOOP used once
+STOP 00000060
+
+Symbol: STOP
+   Definitions
+      At line 37 in file main.s
+   Uses
+      At line 37 in file main.s
+Comment: STOP used once
+4 symbols
+338 symbols in table

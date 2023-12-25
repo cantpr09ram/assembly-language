@@ -1,0 +1,67 @@
+		AREA EXAMPLE, CODE
+		ENTRY
+		LDR	R0, =0xDEADBEEF
+		LDR	R1, =0xFACEABCD
+		LDR	SP, = 0x40000020
+		BL	FUNC1
+		BL 	FUNC2
+		BL 	FUNC3
+		BL	FUNC4
+STOP	B	STOP
+
+FUNC1	
+		MOV	R3, #0xFF
+		AND R2, R0, #0xFF00FFFF
+		ORR R0, R2, R3, LSL #16;
+		BX	LR
+		LTORG
+
+FUNC2	
+		LSR	R3, R0, #12
+		AND	R3, R3,	#0xFF
+		BIC	R1, R1, #0xFF
+		ORR	R1, R1, R3
+        BX	LR
+		LTORG
+FUNC3
+		STMFD SP!, {R0, R1}
+		LDR		R4, =1
+		LDR		R3, =0
+		LDR		R6, =32
+		
+		EOR		R9, R0, R1
+LOOPD
+		TST		R9, R4
+		ADDNE	R3, #1
+		LSL		R4, #1
+		SUB		R6, #1
+		CMP		R6, #0
+		BNE		LOOPD
+		LDMFD SP!, {R0, R1}
+		BX	LR
+		LTORG
+		
+
+		BX LR
+FUNC4
+		STMFD SP!, {R0, R1}
+		
+		LDR		R4, =0
+		LDR		R6, =0
+		
+		EOR		R9, R0, R1
+LOOP
+		MOV		R5, R9,  LSR R6
+		AND		R5, R5, #1
+		ADD		R4, R4, R5
+		ADD		R6, R6,	#1
+		CMP		R6, #32
+		BNE		LOOP
+		LDMFD SP!, {R0, R1}
+		BX	LR
+		LTORG
+
+BIGTABLE	
+		SPACE	4200
+		END
+		

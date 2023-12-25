@@ -1,0 +1,57 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             FINAL, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         ;1-2
+    4 00000000 E59F0028        LDR              R0, = 0xBBBBBBBB
+    5 00000004 E3E01000        LDR              R1, = 0xFFFFFFFF
+    6 00000008 E59F2024        LDR              R2, = 0xEEEEEEEE
+    7 0000000C E59F3024        LDR              R3, = 0xDDDDDDDD
+    8 00000010         
+    9 00000010 E3A04000        MOV              R4, #0
+   10 00000014 E3A05000        MOV              R5, #0
+   11 00000018 E3A06000        MOV              R6, #0
+   12 0000001C E3A07000        MOV              R7, #0
+   13 00000020         
+   14 00000020 E3A081C1        LDR              R8, = 0x40000030
+   15 00000024 E928000F        STMDB            R8! ,{R0, R1, R2, R3}
+   16 00000028         
+   17 00000028 E8B800F0        LDMIA            R8! ,{R4, R5, R6, R7}
+   18 0000002C EAFFFFFE 
+                       STOP    B                STOP
+   19 00000030                 END
+              BBBBBBBB 
+              EEEEEEEE 
+              DDDDDDDD 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\main.d -o.\objects\main.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine
+="__UVISION_VERSION SETA 528" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+FINAL 00000000
+
+Symbol: FINAL
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: FINAL unused
+STOP 0000002C
+
+Symbol: STOP
+   Definitions
+      At line 18 in file main.s
+   Uses
+      At line 18 in file main.s
+Comment: STOP used once
+2 symbols
+336 symbols in table
