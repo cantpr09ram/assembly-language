@@ -1,83 +1,142 @@
-        AREA HammingCode, CODE, READONLY
-		ENTRY
-        ; Define memory address for Hamming code
-		LDR R0, =0x00000BA6 ;101110100110 => 
-		LDR R1, =0x40000000
-		MOV R2, #0
-		MOV R3, #0
-		LDR R4, =0x40000004
-		MOV R7, #0
-		MOV R6, #0
-        ; Load the Hamming code from memory
-               
-		MOV R3, R0 ; make a copy
+		AREA    hw4, CODE
+        ENTRY
+        ; registers used:
+        ; r0 - used to hold the 12-bit data
+        ; r1 - temp
+        ; r2 - used to hold address of data
+        ; r3 - used to hold the faulty checksum index
+        ; r4 - temp
+        ; r5 - hold the index of the faulty bit (12 bit)
+        ; r6 - holds the 8-bit data
+        ; r7 - temp
+        ; r8 - big counter
+		;411440430 \u8b19
+        MOV     r8, #6
+        ADR     r2, data
+main    
+        MOV     r3, #0
+        MOV     r6, #0
+        LDRH     r0, [r2], #2
+        
+        MOV     r4, r0              ; makes a copy
+        ; check c0 ----------------------------------------------|
+        EOR     r4, r4, r0, ROR #2
+        EOR     r4, r4, r0, ROR #4
+        EOR     r4, r4, r0, ROR #6
+        EOR     r4, r4, r0, ROR #8
+        EOR     r4, r4, r0, ROR #10
+        ANDS    r4, r4, #1          ; isolate bit
+
+        ; if the Z flag is clear(not zero), the c0 parity isn't even
+        ORRNE   r3, r3, #1        ; AND the bits to find the matching ones
+
+        ; check c1 ----------------------------------------------|
+        ROR     r4, r0, #1          ; get bit 1
+        EOR     r4, r4, r0, ROR #2  ; 2 XOR 1
+        EOR     r4, r4, r0, ROR #5
+        EOR     r4, r4, r0, ROR #6
+        EOR     r4, r4, r0, ROR #9
+        EOR     r4, r4, r0, ROR #10
+        ANDS    r4, r4, #1          ; isolate bit
+
+        ; if the Z flag is clear, the c1 parity isn't even
+        ORRNE   r3, r3, #2
+
+        ; check c2 ----------------------------------------------|
+        ROR     r4, r0, #3          ; get bit 3
+        EOR     r4, r4, r0, ROR #4  ; 3 XOR 4
+        EOR     r4, r4, r0, ROR #5
+        EOR     r4, r4, r0, ROR #6
+        EOR     r4, r4, r0, ROR #11
+        ANDS    r4, r4, #1          ; isolate bit
 		
-		BIC R3, R3, #0xFF
-		MOV R6, R3, ROR #4
-		;7654****
-		LDR R5, = 0xF8F
-		BIC R3, R0, R5
-		ORR R6, R6 ,R3, ROR #3
-		;7654321*
-        ; Store the result in R2
-        LDR R5, = 0xFFB
-		BIC R3, R0, R5
-		ORR R6, R6 ,R3, ROR #2
-		; Load the ckackbit from memory
-		
-		LDR R5, = 0xF7F
-		BIC R3, R0, R5
-		ORR R7, R7 ,R3, ROR #4
-		
-		LDR R5, = 0xFF7
-		BIC R3, R0, R5
-		ORR R7, R7 ,R3, ROR #1
-		
-		LDR R5, = 0xFFc
-		BIC R3, R0, R5
-		ORR R7, R7 ,R3
-		;R6 => 8-bit data from 12-bit data
-		;R0 => 12-bit data
-		;R7 => checksum bit from 12-bit data
-		
-		MOV R3, R6
-		
-		;C0
-		EOR R3, R3, R6, ROR #1 ; 1 XOR 0
-		EOR R3, R3, R6, ROR #3 ; 3 XOR 1 XOR 0
-		EOR R3, R3, R6, ROR #4 ; 4 XOR 3 XOR 1 XOR 0
-		EOR R3, R3, R6, ROR #6 ; 6 XOR 4 XOR 3 XOR 1 XOR 0
-		AND R2, R3, #1
-		;C1
-		MOV R3, R6
-		EOR R3, R3, R6, ROR #2 ; 2 XOR 0
-		EOR R3, R3, R6, ROR #3 ; 3 XOR 2 XOR 0
-		EOR R3, R3, R6, ROR #5 ; 5 XOR 3 XOR 2 XOR 0
-		EOR R3, R3, R6, ROR #6 ; 6 XOR 4 XOR 3 XOR 2 XOR 0
-		AND R3, R3, #1
-		ORR R2, R2, R3, LSL #1
-		;C2
-		ROR R3, R6, #1 ; get bit 1
-		EOR R3, R3, R6, ROR #2 ; 2 XOR 1
-		EOR R3, R3, R6, ROR #3 ; 3 XOR 2 XOR 1
-		EOR R3, R3, R6, ROR #7 ; 7 XOR 3 XOR 2 XOR 1
-		AND R3, R3, #1
-		ORR R2, R2, R3, LSL #2
-		
-		ROR R3, R6, #4 ; get bit 4
-		EOR R3, R3, R6, ROR #5 ; 5 XOR 4
-		EOR R3, R3, R6, ROR #6 ; 6 XOR 5 XOR 4
-		EOR R3, R3, R6, ROR #7 ; 7 XOR 6 XOR 5 XOR 4
-		AND R3, R3, #1
-		ORR R2, R2, R3, LSL #3
-		;R2 => checksum bit from 8-bit data
-		
-        ; End of program
-STOP    B   STOP
+        ;411440430 \u8b19
+        ; if the Z flag is clear, the c2 parity isn't even
+        ORRNE   r3, r3, #4
+
+        ; check c3 ----------------------------------------------|
+        ROR     r4, r0, #7          ; get bit 7
+        EOR     r4, r4, r0, ROR #8
+        EOR     r4, r4, r0, ROR #9
+        EOR     r4, r4, r0, ROR #10
+        EOR     r4, r4, r0, ROR #11
+        ANDS    r4, r4, #1
+
+        ; if the Z flag is clear, the c3 parity isn't even
+        ORRNE   r3, r3, #8
+
+        ; checking stage... -------------------------------------|
+        ; check how many faulty checksums there are
+        ;(if r4==0|1->build, 2|3->fix, 4->unfixable)
+        MOV     r4, #0              ; clear r4
+        MOV     r7, #0              ; clear r7
+errcnt    ;411440430 \u8b19
+        CMP     r7, #3
+        ROR     r5, r3, r7          ; get bit
+        AND     r5, r5, #1          ; isolate bit
+        ADD     r4, r4, r5
+        ADD     r7, r7, #1
+        BNE     errcnt
+
+        CMP     r4, #0              ; there's no error here
+        BEQ     build
+        CMP     r4, #1
+        BEQ     build
+        CMP     r4, #4              ; too many errors, terminates program
+        BEQ     stop
+
+        ; find the faulty bit-------------------------------------|
+        MVN     r5, #0              ; set to -1
+        MOV     r7, #0              ; clear r7
+findb   
+        CMP     r7, #3
+        ROR     r4, r3, r7          ; get bit
+        AND     r4, r4, #1          ; isolate bit
+        ADD     r5, r5, r4, LSL r7
+        ADD     r7, r7, #1
+        BNE     findb
+        ; r5 now has the index of faulty bit
+
+        ROR     r4, r0, r5          ; get the faulty bit
+        EOR     r4, r4, #1          ; invert the faulty bit
+        SUB     r7, r5, #32
+        MVN     r1, r7              ; 
+        ADD     r7, r1, #1
+        ROR     r0, r4, r7
+
+		;411440430 \u8b19
+        ; build the 8-bit data
+        ; if there's any error in the 12-bit data, it should've been fixed
+build   ROR     r4, r0, #2          ; (1)get bit 2 from 12 bit data
+        AND     r6, r4, #1          ; isolate bit and emplace to 8 bit data
+
+        ROR     r4, r0, #3          ; (2)get bit 4~6 to the correct place
+        AND     r4, r4, #0xE        ; isolate bit
+        ORR     r6, r6, r4          ; emplace the 3~1 bits into 8 bit data
+
+        ROR     r4, r0, #4          ; (3)get bit 8~11 to the correct place
+        AND     r4, r4, #0xF0       ; isolate bit
+        ORR     r6, r6, r4          ; emplace the 4~7 bits into 8-bit data
+        ; r6 now has the correct 8-bit data
+        
+        CMP     r8, #0              ; big counter
+        SUB     r8, #1
+        BNE     main
+        ALIGN
+stop 	B		stop
+		;411440430 \u8b19
+data    
+		DCW     0xBA5 ; 12 bit data for 0xB5
+		DCW     0xBA7, 0xBA4, 0xBAE, 0xB26, 0xBA5, 0xB2E
         END
-			
-;d7 d6 d5 d4 c3 d3 d2 d1 c2 d0 c1 c0
-;12 11 10  9  8  7  6  5  4  3  2  1
-;1011 1010 0110 => 1011 0101
-;BA6 => B5
-;1010 C3 C2 C1 C0
+		;checksum bit       *   * **
+		;BA6 => 		101110100110
+						
+		;BA7 =>         101110100111 c0
+		;BA4 =>         101110100100 c1
+		;BAE =>			101110101110 c2
+		;B26 =>         101100100110 c3
+						
+		;BA5 =>         101110100101 c0 c1
+		;B2F =>         101100101110 c3 c2
+		;               101110100110
